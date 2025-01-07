@@ -1,7 +1,7 @@
-1. allon_sensor_tflm_freertos.7z : dpd mode sample code
+1. allon_sensor_tflm_freertos : dpd mode sample code
 sleep_mode.c : call app_pmu_enter_dpd() to enter dpd mode and wake up via PA0
 
-2. we2_image_gen_local_dpd.7z : bootloader for dpd mode
+2. we2_image_gen_local_dpd : bootloader for dpd mode
 execute following command to generate dpd mode firmware image
 
 ./we2_local_image_gen project_case1_blp_wlcsp_rc24m.json
