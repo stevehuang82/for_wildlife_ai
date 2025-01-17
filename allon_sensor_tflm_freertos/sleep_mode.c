@@ -301,10 +301,21 @@ void app_pmu_enter_dpd()
 	SCU_LSCCLKDIV_E pmuwakeup_cm55s_div;
 
 	/*Get System Current Clock*/
+	//BOOTROM_DISPLL_BL_PLL
+	SWREG_AON_WARMBOOTDISPLL_BLCHG_E warmbootclk = SWREG_AON_WARMBOOTDISPLL_BLCHG_YES;
+	hx_drv_swreg_aon_set_bl_warmbootclk(warmbootclk);
 	hx_drv_swreg_aon_get_pmuwakeup_freq(&pmuwakeup_pll_freq, &pmuwakeup_cm55m_div, &pmuwakeup_cm55s_div);
 	hx_drv_swreg_aon_get_pllfreq(&freq);
 	xprintf("pmuwakeup_freq_type=%d, pmuwakeup_cm55m_div=%d, pmuwakeup_cm55s_div=%d\n", pmuwakeup_pll_freq, pmuwakeup_cm55m_div, pmuwakeup_cm55s_div);
 	xprintf("pmuwakeup_run_freq=%d\n", freq);
+	hx_drv_swreg_aon_set_bl_pmuwakeup_freq(pmuwakeup_pll_freq, pmuwakeup_cm55m_div, pmuwakeup_cm55s_div);
+	hx_drv_swreg_aon_set_bl_pllfreq(freq);
+	pmuwakeup_pll_freq = SCU_PLL_FREQ_DISABLE;
+	freq = 0;
+	pmuwakeup_cm55m_div = SCU_HSCCLKDIV_1;
+	pmuwakeup_cm55s_div = SCU_LSCCLKDIV_1;
+	xprintf("Bootrom pmuwakeup_freq_type=%d, pmuwakeup_cm55m_div=%d, pmuwakeup_cm55s_div=%d\n", pmuwakeup_pll_freq, pmuwakeup_cm55m_div, pmuwakeup_cm55s_div);
+	xprintf("Bootrom pmuwakeup_run_freq=%d\n", freq);
 
 	mode = PM_MODE_PS_DPD;
 	hx_lib_pm_get_defcfg_bymode(&cfg, mode);
