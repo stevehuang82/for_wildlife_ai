@@ -235,6 +235,10 @@ void main_task(void *pvParameters)
 	hx_drv_pmu_get_ctrl(PMU_pmu_wakeup_EVT1, &wakeup_event1);
     xprintf("wakeup_event=0x%x,WakeupEvt1=0x%x\n", wakeup_event, wakeup_event1);
 
+#if ( SUPPORT_FATFS == 1 )
+	fatfs_init();
+#endif
+
 #if (FLASH_XIP_MODEL == 1)
     hx_lib_spi_eeprom_open(USE_DW_SPI_MST_Q);
     hx_lib_spi_eeprom_enable_XIP(USE_DW_SPI_MST_Q, true, FLASH_QUAD, true);
@@ -402,10 +406,16 @@ void main_task(void *pvParameters)
 				#if ( ENTER_SLEEP_MODE == 1 )
 				if ( g_algo_done_frame == g_enter_pmu_frame_cnt )
 				{
+					dbg_printf(DBG_LESS_INFO, "\nAPP_STATE_STOP!\n");
 					app_start_state(APP_STATE_STOP);
-					dbg_printf(DBG_LESS_INFO, "\nEnter Sleep 3000ms\n");
-					// app_pmu_enter_sleep(3000, 0xFF, 0);	// 1 second or AON_GPIO0 wake up, memory no retention
-					// app_pmu_enter_sleep(0, 0x00, 0);	// 1 second or AON_GPIO0 wake up, memory no retention
+					// hx_drv_timer_cm55x_delay_ms(2000, TIMER_STATE_DC);
+					cisdp_sensor_md_init();
+					// dbg_printf(DBG_LESS_INFO, "\ncisdp_sensor_md_init done! check sen_int (wait 10 sec)...\n");
+					// hx_drv_timer_cm55x_delay_ms(10000, TIMER_STATE_DC);
+
+					// dbg_printf(DBG_LESS_INFO, "\nEnter PD mode!\n");
+					// app_pmu_enter_sleep(0000, 0x00, 0);	// 1 second or AON_GPIO0 wake up, memory no retention
+					dbg_printf(DBG_LESS_INFO, "\nEnter DPD mode!\n");
 					app_pmu_enter_dpd();
 				}
 				#endif	// ENTER_SLEEP_MODE

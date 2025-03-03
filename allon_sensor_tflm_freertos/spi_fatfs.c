@@ -81,6 +81,7 @@ int fatfs_init(void)
         printf("cur_dir = %s\r\n", cur_dir);
     }
 
+#if 0   // do not list files
     res = list_dir(cur_dir);
     if (res)
     {
@@ -92,6 +93,7 @@ int fatfs_init(void)
     {
         printf("scan_files res = %d\r\n", res);
     }
+#endif
 
     while ( 1 )
     {

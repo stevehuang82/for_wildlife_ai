@@ -19,9 +19,9 @@
 #define FLASH_XIP_MODEL             0
 #define MEM_FREE_POS                (BOOT2NDLOADER_BASE)
 
-#define SUPPORT_FATFS               0       // 0 : send images via SPI, 1 : save images to SD card
+#define SUPPORT_FATFS               1       // 0 : send images via SPI, 1 : save images to SD card
 #define ENTER_SLEEP_MODE			1		// 0 : always on, 1 : enter Sleep mode
-#define SENSOR_AE_STABLE_CNT		10
-#define ENTER_PMU_MODE_FRAME_CNT	10
+#define SENSOR_AE_STABLE_CNT		20
+#define ENTER_PMU_MODE_FRAME_CNT	20
 
 #endif /* APP_SCENARIO_ALLON_SENSOR_TFLM_COMMON_CONFIG_H_ */

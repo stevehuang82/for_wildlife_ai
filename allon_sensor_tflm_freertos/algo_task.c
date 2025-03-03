@@ -91,9 +91,7 @@ void algo_task(void *pvParameters)
 	uint32_t chipid, version;
 	char filename[20];
 
-#if ( SUPPORT_FATFS == 1 )
-	fatfs_init();
-#else
+#if ( SUPPORT_FATFS == 0 )
     if ( hx_drv_spi_mst_open_speed(SPI_SEN_PIC_CLK) != 0 )
     {
         xprintf("SPI master init fail\r\n");
