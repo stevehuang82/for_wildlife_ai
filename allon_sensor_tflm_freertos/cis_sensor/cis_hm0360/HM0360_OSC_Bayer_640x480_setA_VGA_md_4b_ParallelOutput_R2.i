@@ -279,12 +279,12 @@
 		{HX_CIS_I2C_Action_W, 0x352b, 0xbc},
 		{HX_CIS_I2C_Action_W, 0x352c, 0x00},
 		{HX_CIS_I2C_Action_W, 0x352d, 0xe1},
-		{HX_CIS_I2C_Action_W, 0x354b, 0x21},
-		{HX_CIS_I2C_Action_W, 0x354c, 0x01},
-		{HX_CIS_I2C_Action_W, 0x354d, 0xe0},
-		{HX_CIS_I2C_Action_W, 0x354e, 0xf0},
-		{HX_CIS_I2C_Action_W, 0x354f, 0x10},
-		{HX_CIS_I2C_Action_W, 0x3550, 0x10},
+		{HX_CIS_I2C_Action_W, 0x354b, 0x41},	// Context A MD_LIGHT_COEF [0x41/0x31/0x21]
+		{HX_CIS_I2C_Action_W, 0x354c, 0x04},	// Context A MD_BLOCK_NUM_TH
+		{HX_CIS_I2C_Action_W, 0x354d, 0xe0},	// Context A ROI_V
+		{HX_CIS_I2C_Action_W, 0x354e, 0xf0},	// Context A ROI_H
+		{HX_CIS_I2C_Action_W, 0x354f, 0x30},	// Context A MD_TH_STR_H [0x30/0x20/0x10]
+		{HX_CIS_I2C_Action_W, 0x3550, 0x30},	// Context A MD_TH_STR_L [0x30/0x20/0x10]
 		{HX_CIS_I2C_Action_W, 0x3551, 0x10},
 		{HX_CIS_I2C_Action_W, 0x3552, 0x20},
 		{HX_CIS_I2C_Action_W, 0x3553, 0x10},
@@ -303,10 +303,10 @@
 		{HX_CIS_I2C_Action_W, 0x355e, 0x14},
 		{HX_CIS_I2C_Action_W, 0x355f, 0x04},
 		{HX_CIS_I2C_Action_W, 0x3560, 0x29},
-		{HX_CIS_I2C_Action_W, 0x3561, 0x01},
-		{HX_CIS_I2C_Action_W, 0x3562, 0x01},
-		{HX_CIS_I2C_Action_W, 0x3563, 0x03},
-		{HX_CIS_I2C_Action_W, 0x3564, 0x55},
+		{HX_CIS_I2C_Action_W, 0x3561, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3562, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3563, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3564, 0xff},
 		{HX_CIS_I2C_Action_W, 0x3565, 0x01},
 		{HX_CIS_I2C_Action_W, 0x3567, 0x01},
 		{HX_CIS_I2C_Action_W, 0x3566, 0x00},
@@ -321,9 +321,9 @@
 		{HX_CIS_I2C_Action_W, 0x3570, 0x00},
 		{HX_CIS_I2C_Action_W, 0x3571, 0x02},
 		{HX_CIS_I2C_Action_W, 0x3572, 0x00},
-		{HX_CIS_I2C_Action_W, 0x3573, 0x3f},
+		{HX_CIS_I2C_Action_W, 0x3573, 0x7f},
 		{HX_CIS_I2C_Action_W, 0x3574, 0x00},
-		{HX_CIS_I2C_Action_W, 0x3575, 0x2f},
+		{HX_CIS_I2C_Action_W, 0x3575, 0x5f},
 		{HX_CIS_I2C_Action_W, 0x3577, 0x02},
 		{HX_CIS_I2C_Action_W, 0x3578, 0x10},
 		{HX_CIS_I2C_Action_W, 0x3584, 0x00},
@@ -336,12 +336,12 @@
 		{HX_CIS_I2C_Action_W, 0x358b, 0x24},
 		{HX_CIS_I2C_Action_W, 0x358c, 0x06},
 		{HX_CIS_I2C_Action_W, 0x358d, 0x36},
-		{HX_CIS_I2C_Action_W, 0x35a5, 0x21},
-		{HX_CIS_I2C_Action_W, 0x35a6, 0x01},
-		{HX_CIS_I2C_Action_W, 0x35a7, 0xe0},
-		{HX_CIS_I2C_Action_W, 0x35a8, 0xf0},
-		{HX_CIS_I2C_Action_W, 0x35a9, 0x10},
-		{HX_CIS_I2C_Action_W, 0x35aa, 0x10},
+		{HX_CIS_I2C_Action_W, 0x35a5, 0x41},	// Context B MD_LIGHT_COEF [0x41/0x31/0x21]
+		{HX_CIS_I2C_Action_W, 0x35a6, 0x04},	// Context B MD_BLOCK_NUM_TH
+		{HX_CIS_I2C_Action_W, 0x35a7, 0xe0},	// Context B ROI_V
+		{HX_CIS_I2C_Action_W, 0x35a8, 0xf0},	// Context B ROI_H
+		{HX_CIS_I2C_Action_W, 0x35a9, 0x30},	// Context B MD_TH_STR_H [0x30/0x20/0x10]
+		{HX_CIS_I2C_Action_W, 0x35aa, 0x30},	// Context B MD_TH_STR_L [0x30/0x20/0x10]
 		{HX_CIS_I2C_Action_W, 0x35ab, 0x10},
 		{HX_CIS_I2C_Action_W, 0x35ac, 0x20},
 		{HX_CIS_I2C_Action_W, 0x35ad, 0x10},
@@ -351,8 +351,8 @@
 		{HX_CIS_I2C_Action_W, 0x35b1, 0x12},
 		{HX_CIS_I2C_Action_W, 0x35b2, 0x1c},
 		{HX_CIS_I2C_Action_W, 0x35b3, 0x30},
-		{HX_CIS_I2C_Action_W, 0x35a3, 0x02},
-		{HX_CIS_I2C_Action_W, 0x35a4, 0x03},
+		{HX_CIS_I2C_Action_W, 0x35a3, 0x04},
+		{HX_CIS_I2C_Action_W, 0x35a4, 0x35},
 		{HX_CIS_I2C_Action_W, 0x2000, 0x3f},
 		{HX_CIS_I2C_Action_W, 0x202b, 0x04},
 		{HX_CIS_I2C_Action_W, 0x202c, 0x03},
@@ -410,12 +410,12 @@
 		{HX_CIS_I2C_Action_W, 0x203d, 0x04},
 		{HX_CIS_I2C_Action_W, 0x203e, 0x01},
 		{HX_CIS_I2C_Action_W, 0x203f, 0x38},
-		{HX_CIS_I2C_Action_W, 0x2080, 0x41},
-		{HX_CIS_I2C_Action_W, 0x2081, 0xe0},
-		{HX_CIS_I2C_Action_W, 0x2082, 0xf0},
+		{HX_CIS_I2C_Action_W, 0x2080, 0x31},	// MD_CTRL [5:4]: MD latency select, [0]: Motion detect enable
+		{HX_CIS_I2C_Action_W, 0x2081, 0xa4},	// ROI_V
+		{HX_CIS_I2C_Action_W, 0x2082, 0xb5},	// ROI_H
 		{HX_CIS_I2C_Action_W, 0x2083, 0x01},
-		{HX_CIS_I2C_Action_W, 0x2084, 0x10},
-		{HX_CIS_I2C_Action_W, 0x2085, 0x10},
+		{HX_CIS_I2C_Action_W, 0x2084, 0x30},	// MD_TH_STR_L [0x30/0x20/0x10]
+		{HX_CIS_I2C_Action_W, 0x2085, 0x30},	// MD_TH_STR_H [0x30/0x20/0x10]
 		{HX_CIS_I2C_Action_W, 0x2086, 0x01},
 		{HX_CIS_I2C_Action_W, 0x2087, 0x06},
 		{HX_CIS_I2C_Action_W, 0x2088, 0x0c},
@@ -435,12 +435,12 @@
 		{HX_CIS_I2C_Action_W, 0x2096, 0x14},
 		{HX_CIS_I2C_Action_W, 0x2097, 0x18},
 		{HX_CIS_I2C_Action_W, 0x2098, 0x20},
-		{HX_CIS_I2C_Action_W, 0x2099, 0x10},
-		{HX_CIS_I2C_Action_W, 0x209a, 0x00},
-		{HX_CIS_I2C_Action_W, 0x209b, 0x01},
+		{HX_CIS_I2C_Action_W, 0x2099, 0x20},	// MD_LIGHT_COEF [0x20/0x18/0x10]
+		{HX_CIS_I2C_Action_W, 0x209a, 0x00},	// MD_IIR_PARAMETER [0x00/0x80/0xf0]
+		{HX_CIS_I2C_Action_W, 0x209b, 0x04},	// MD MD_BLOCK_NUM_TH
 		{HX_CIS_I2C_Action_W, 0x209c, 0x01},
-		{HX_CIS_I2C_Action_W, 0x209d, 0x11},
-		{HX_CIS_I2C_Action_W, 0x209e, 0x06},
+		{HX_CIS_I2C_Action_W, 0x209d, 0x33},	// MD_LATENCY_TH [7:4]: s, [3:0]: m
+		{HX_CIS_I2C_Action_W, 0x209e, 0x07},	// MD enable latency
 		{HX_CIS_I2C_Action_W, 0x209f, 0x20},
 		{HX_CIS_I2C_Action_W, 0x20a0, 0x10},
 		{HX_CIS_I2C_Action_W, 0x1030, 0x09},
@@ -515,22 +515,23 @@
 		{HX_CIS_I2C_Action_W, 0x35df, 0x01},
 		{HX_CIS_I2C_Action_W, 0x35fd, 0x00},
 		{HX_CIS_I2C_Action_W, 0x35fe, 0x5e},
-		{HX_CIS_I2C_Action_W, 0x3024, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3024, 0x00},	// CTX_SEL [1] = 0 (SW, I2C), [0] 0 : Context A, 1 : Context B
 		{HX_CIS_I2C_Action_W, 0x3025, 0x12},
-		{HX_CIS_I2C_Action_W, 0x3026, 0x01},
+		{HX_CIS_I2C_Action_W, 0x3026, 0x03},
 		{HX_CIS_I2C_Action_W, 0x3027, 0x81},
 		{HX_CIS_I2C_Action_W, 0x3028, 0x01},
 		{HX_CIS_I2C_Action_W, 0x2061, 0x01},
 		{HX_CIS_I2C_Action_W, 0x2062, 0x02},
 		{HX_CIS_I2C_Action_W, 0x2063, 0xc8},
-		{HX_CIS_I2C_Action_W, 0x209e, 0x00},
-		{HX_CIS_I2C_Action_W, 0x350f, 0x01},
+		{HX_CIS_I2C_Action_W, 0x209e, 0x02},
+		{HX_CIS_I2C_Action_W, 0x350f, 0x00},
 		{HX_CIS_I2C_Action_W, 0x3569, 0x01},
 		{HX_CIS_I2C_Action_W, 0x309d, 0x14},
 		{HX_CIS_I2C_Action_W, 0x0102, 0x00},
 		{HX_CIS_I2C_Action_W, 0x3511, 0x00},
 		{HX_CIS_I2C_Action_W, 0x356b, 0x00},
 		{HX_CIS_I2C_Action_W, 0x35c5, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3510, 0x00},
 		{HX_CIS_I2C_Action_W, 0x1014, 0x00},
 		{HX_CIS_I2C_Action_W, 0x102f, 0x08},
 		{HX_CIS_I2C_Action_W, 0x3094, 0x02},
@@ -564,9 +565,9 @@
 		{HX_CIS_I2C_Action_W, 0x30a5, 0x01},
 		{HX_CIS_I2C_Action_W, 0x2800, 0x00},
 		{HX_CIS_I2C_Action_W, 0x2821, 0xde},
-		{HX_CIS_I2C_Action_W, 0x282A, 0x0F},   //For VERB,C,D
-		{HX_CIS_I2C_Action_W, 0x282B, 0x08},   //For VERB,C,D
-		{HX_CIS_I2C_Action_W, 0x282E, 0x2F},   //For VERB,C,D
+		{HX_CIS_I2C_Action_W, 0x282A, 0x0F},
+		{HX_CIS_I2C_Action_W, 0x282B, 0x08},
+		{HX_CIS_I2C_Action_W, 0x282E, 0x2F},
 		{HX_CIS_I2C_Action_W, 0x2590, 0x01},
 		{HX_CIS_I2C_Action_W, 0x100a, 0x07},
 		{HX_CIS_I2C_Action_W, 0x350e, 0x10},

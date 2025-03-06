@@ -230,14 +230,11 @@ void main_task(void *pvParameters)
     uint8_t gpioValue;
 	uint32_t wakeup_event;
 	uint32_t wakeup_event1;
+	rtc_time tm;
 
 	hx_drv_pmu_get_ctrl(PMU_pmu_wakeup_EVT, &wakeup_event);
 	hx_drv_pmu_get_ctrl(PMU_pmu_wakeup_EVT1, &wakeup_event1);
     xprintf("wakeup_event=0x%x,WakeupEvt1=0x%x\n", wakeup_event, wakeup_event1);
-
-#if ( SUPPORT_FATFS == 1 )
-	fatfs_init();
-#endif
 
 #if (FLASH_XIP_MODEL == 1)
     hx_lib_spi_eeprom_open(USE_DW_SPI_MST_Q);
@@ -256,6 +253,11 @@ void main_task(void *pvParameters)
 	{
 		/*Cold Boot*/
 		xprintf("### Cold Boot ###\n");
+		tm.tm_year = 2025; tm.tm_mon = 3; tm.tm_mday = 6; tm.tm_hour = 15; tm.tm_min = 30; tm.tm_sec = 0;
+		RTC_SetTime(&tm);
+		#if ( SUPPORT_FATFS == 1 )
+		fatfs_init();
+		#endif
 		g_enter_pmu_frame_cnt = SENSOR_AE_STABLE_CNT;
     	app_start_state(APP_STATE_ALLON);
 	}
@@ -263,11 +265,16 @@ void main_task(void *pvParameters)
 	{
 		/*Warm Boot*/
 		xprintf("### Warm Boot ###\n");
+		app_clk_enable();
+		RTC_GetTime(&tm);
+		xprintf("RTC GetTime : %d/%02d/%02d %02d:%02d:%02d\r\n",
+			tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+		#if ( SUPPORT_FATFS == 1 )
+		fatfs_init();
+		#endif
 		g_enter_pmu_frame_cnt = ENTER_PMU_MODE_FRAME_CNT;
-		xprintf("drv_interface_set_mipi_ctrl(SCU_MIPI_CTRL_CPU)\n");
 		drv_interface_set_mipi_ctrl(SCU_MIPI_CTRL_CPU);
         sensordplib_csirx_disable();
-    	// app_start_state(APP_STATE_RESTART);
 		app_start_state(APP_STATE_ALLON);
 	}
 
@@ -406,15 +413,8 @@ void main_task(void *pvParameters)
 				#if ( ENTER_SLEEP_MODE == 1 )
 				if ( g_algo_done_frame == g_enter_pmu_frame_cnt )
 				{
-					dbg_printf(DBG_LESS_INFO, "\nAPP_STATE_STOP!\n");
 					app_start_state(APP_STATE_STOP);
-					// hx_drv_timer_cm55x_delay_ms(2000, TIMER_STATE_DC);
 					cisdp_sensor_md_init();
-					// dbg_printf(DBG_LESS_INFO, "\ncisdp_sensor_md_init done! check sen_int (wait 10 sec)...\n");
-					// hx_drv_timer_cm55x_delay_ms(10000, TIMER_STATE_DC);
-
-					// dbg_printf(DBG_LESS_INFO, "\nEnter PD mode!\n");
-					// app_pmu_enter_sleep(0000, 0x00, 0);	// 1 second or AON_GPIO0 wake up, memory no retention
 					dbg_printf(DBG_LESS_INFO, "\nEnter DPD mode!\n");
 					app_pmu_enter_dpd();
 				}

@@ -9,3 +9,12 @@ execute following command to generate dpd mode firmware image
 Please make sure bootloader message as below.
 
 1st BL Modem Build DATE=Jan  7 2025, Version: 2.12
+
+20250306
+1. allon_sensor_tflm_freertos :
+   a. Fine-tune the HM0360 motion detection sensitivity setting
+   b. Support RTC timer in dpd mode
+   c. Create SD card image folder names by time
+2. add \doc\HM0360_Motion_Detection_Setting_20250306.pdf
+
+

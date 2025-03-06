@@ -105,6 +105,33 @@ static void print_wakeup_event(uint32_t event, uint32_t event1)
 
 }
 
+void app_clk_enable()
+{
+	SCU_PDAON_CLKEN_CFG_T aonclken;
+
+	aonclken.rtc0_clk_en = 1;/*!< RTC0 Clock enable */
+	aonclken.rtc1_clk_en = 1;/*!< RTC1 Clock enable */
+	aonclken.rtc2_clk_en = 1;/*!< RTC2 Clock enable */
+	aonclken.pmu_clk_en = 1;/*!< PMU Clock enable */
+	aonclken.aon_gpio_clk_en = 1;/*!< AON GPIO Clock enable */
+	aonclken.aon_swreg_clk_en = 1;/*!< AON SW REG Clock enable */
+	aonclken.antitamper_clk_en = 1;/*!< ANTI TAMPER Clock enable */
+	hx_drv_scu_set_pdaon_clken_cfg(aonclken);
+}
+
+void app_clk_disable()
+{
+	SCU_PDAON_CLKEN_CFG_T aonclken;
+
+	aonclken.rtc0_clk_en = 1;/*!< RTC0 Clock enable */
+	aonclken.rtc1_clk_en = 0;/*!< RTC1 Clock enable */
+	aonclken.rtc2_clk_en = 0;/*!< RTC2 Clock enable */
+	aonclken.pmu_clk_en = 1;/*!< PMU Clock enable */
+	aonclken.aon_gpio_clk_en = 0;/*!< AON GPIO Clock enable */
+	aonclken.aon_swreg_clk_en = 1;/*!< AON SW REG Clock enable */
+	aonclken.antitamper_clk_en = 0;/*!< ANTI TAMPER Clock enable */
+	hx_drv_scu_set_pdaon_clken_cfg(aonclken);
+}
 
 void setCM55MTimerAlarmPMU(uint32_t timer_ms)
 {
@@ -334,8 +361,8 @@ void app_pmu_enter_dpd()
 	/*Mask PA1 Interrupt for PMU*/
 	cfg.pmu_pad_pa1_mask = PM_IP_INT_MASK;
 
-	/*Mask RTC IP Interrupt for PMU*/
-	cfg.pmu_rtc_mask = PM_RTC_INT_MASK_ALLMASK;
+	/*UnMask RTC IP Interrupt fo PMU*/
+	cfg.pmu_rtc_mask = PM_RTC_INT_MASK_ALLUNMASK;
 
 	/*Mask ANTI Tamper Interrupt for PMU*/
 	cfg.pmu_anti_mask = PM_IP_INT_MASK;
@@ -358,9 +385,33 @@ void app_pmu_enter_dpd()
 	/*Set PMU DPD configuration*/
 	hx_lib_pm_cfg_set(&cfg, NULL, mode);
 
+	app_clk_disable();
+
 	/*Use PMU lib to control HSC_CLK and LSC_CLK so set thoes parameter to 0*/
 	memset(&hsc_cfg, 0, sizeof(SCU_PDHSC_HSCCLK_CFG_T));
 	memset(&lsc_cfg, 0, sizeof(SCU_LSC_CLK_CFG_T));
 	/*Trigger to PMU mode*/
 	hx_lib_pm_trigger(hsc_cfg, lsc_cfg, PM_CLK_PARA_CTRL_BYPMLIB);
+}
+
+RTC_ERROR_E RTC_GetTime(rtc_time *tm) {
+	RTC_ERROR_E ret;
+
+	ret = hx_drv_rtc_read_time(RTC_ID_0, tm, RTC_TIME_AFTER_DPD_1ST_READ_NO);
+
+	return ret;
+}
+
+RTC_ERROR_E RTC_SetTime(rtc_time *tm) {
+	RTC_ERROR_E ret;
+
+	xprintf("RTC SetTime : %d/%02d/%02d %02d:%02d:%02d\r\n",
+		tm->tm_year, tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	if ((ret = hx_drv_rtc_set_time(RTC_ID_0, tm)) != RTC_NO_ERROR) {
+		xprintf("set rtc fail %d\r\n", ret);
+	} else {
+		xprintf("set rtc success %d\r\n", ret);
+	}
+	return ret;
 }

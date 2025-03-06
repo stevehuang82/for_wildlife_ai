@@ -2,7 +2,7 @@
 #include "ff.h"
 #include "hx_drv_gpio.h"
 #include "hx_drv_scu.h"
-
+#include "sleep_mode.h"
 
 /*******************************************************************************
  * Prototypes
@@ -56,6 +56,7 @@ int fatfs_init(void)
     char filecontent[256];
     char cur_dir[128];
     UINT len = 128;
+	rtc_time tm;
 
     hx_drv_scu_set_PB2_pinmux(SCU_PB2_PINMUX_SPI_M_DO_1, 1);
     hx_drv_scu_set_PB3_pinmux(SCU_PB3_PINMUX_SPI_M_DI_1, 1);
@@ -68,6 +69,7 @@ int fatfs_init(void)
     if (res)
     {
         printf("f_mount fail, res = %d\r\n", res);
+        printf("Please insert SD card!\r\n");
         while(1);
     }
 
@@ -95,14 +97,17 @@ int fatfs_init(void)
     }
 #endif
 
+    RTC_GetTime(&tm);
+    xsprintf(file_dir, "%04d%02d%02d_%02d%02d%02d", tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
     while ( 1 )
     {
-        xsprintf(file_dir, "%s%04d", CAPTURE_DIR, file_dir_idx);
         res = f_stat(file_dir, &fno);
         if (res == FR_OK)
         {
             printf("%s is exist, create next one.\r\n", file_dir);
             file_dir_idx++;
+            xsprintf(file_dir, "%04d%02d%02d_%02d%02d%02d_%d", tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, file_dir_idx);
         }
         else
         {

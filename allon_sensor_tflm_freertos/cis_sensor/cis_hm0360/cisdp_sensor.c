@@ -60,20 +60,18 @@ static volatile uint32_t g_jpegautofill_addr = (uint32_t)jpegfilesizebuf;
 
 static APP_DP_INP_SUBSAMPLE_E g_subs=APP_DP_RES_YUV640x480_INP_SUBSAMPLE_1X;
 
-static HX_CIS_SensorSetting_t HM0360_init_setting[] = {
-#include "HM0360_OSC_Bayer_640x480_setA_VGA_setB_QVGA_normal_4b_ParallelOutput_R2.i"
-};
-
 static HX_CIS_SensorSetting_t HM0360_md_init_setting[] = {
-#include "HM0360_OSC_Bayer_640x480_setA_VGA_setB_QVGA_md_4b_ParallelOutput_R2.i"
+#include "HM0360_OSC_Bayer_640x480_setA_VGA_md_4b_ParallelOutput_R2.i"
 };
 
 HX_CIS_SensorSetting_t  HM0360_md_stream_on[] = {
+		{HX_CIS_I2C_Action_W, 0x3510, 0x00},
 		{HX_CIS_I2C_Action_W, 0x0100, 0x02},
 };
 
 static HX_CIS_SensorSetting_t HM0360_stream_on[] = {
-        {HX_CIS_I2C_Action_W, 0x0100, 0x01},
+		{HX_CIS_I2C_Action_W, 0x3510, 0x01},
+		{HX_CIS_I2C_Action_W, 0x0100, 0x01},
 };
 
 static HX_CIS_SensorSetting_t HM0360_stream_off[] = {
@@ -92,7 +90,6 @@ static void HM0360_dp_wdma_addr_init(APP_DP_INP_SUBSAMPLE_E subs)
 	xprintf("WD1[%x], WD2_J[%x], WD3_RAW[%x], JPAuto[%x]\n",g_wdma1_baseaddr,g_wdma2_baseaddr,
 			g_wdma3_baseaddr, g_jpegautofill_addr);
 }
-
 
 void hm0360_set_dp_rc96()
 {
@@ -237,7 +234,6 @@ static void set_mipi_csirx_enable()
 
 }
 
-
 static void set_mipi_csirx_disable()
 {
 	dbg_printf(DBG_LESS_INFO, "MIPI CSI Disable\n");
@@ -341,13 +337,10 @@ int cisdp_sensor_md_init()
      */
 	hx_drv_dp_set_mclk_src(DP_MCLK_SRC_INTERNAL, DP_MCLK_SRC_INT_SEL_XTAL);
     hx_drv_cis_init(DEAULT_XHSUTDOWN_PIN, SENSORCTRL_MCLK_DIV1);
-    dbg_printf(DBG_LESS_INFO, "mclk DIV1, xshutdown_pin=%d\n", DEAULT_XHSUTDOWN_PIN);
     hx_drv_sensorctrl_set_xSleepCtrl(SENSORCTRL_XSLEEP_BY_CPU);
     hx_drv_sensorctrl_set_xSleep(1);
-    dbg_printf(DBG_LESS_INFO, "hx_drv_sensorctrl_set_xSleep(1)\n");
-
     hx_drv_cis_set_slaveID(CIS_I2C_ID);
-    dbg_printf(DBG_LESS_INFO, "hx_drv_cis_set_slaveID(0x%02X)\n", CIS_I2C_ID);
+
     /*
      * off stream before init sensor
      */
@@ -395,6 +388,7 @@ int cisdp_sensor_md_init()
         return;
     }
 
+	hx_drv_timer_cm55x_delay_ms(100, TIMER_STATE_DC);
     dbg_printf(DBG_LESS_INFO, "HM0360 Motion Detection on! \r\n");
 
 	return 0;
@@ -420,14 +414,12 @@ int cisdp_sensor_init(bool sensor_init)
 	#endif
 	hx_drv_dp_set_mclk_src(DP_MCLK_SRC_INTERNAL, DP_MCLK_SRC_INT_SEL_XTAL);
     hx_drv_cis_init(DEAULT_XHSUTDOWN_PIN, SENSORCTRL_MCLK_DIV1);
-    dbg_printf(DBG_LESS_INFO, "mclk DIV1, xshutdown_pin=%d\n", DEAULT_XHSUTDOWN_PIN);
     hx_drv_sensorctrl_set_xSleepCtrl(SENSORCTRL_XSLEEP_BY_CPU);
     hx_drv_sensorctrl_set_xSleep(1);
-    dbg_printf(DBG_LESS_INFO, "hx_drv_sensorctrl_set_xSleep(1)\n");
 #endif
 
     hx_drv_cis_set_slaveID(CIS_I2C_ID);
-    dbg_printf(DBG_LESS_INFO, "hx_drv_cis_set_slaveID(0x%02X)\n", CIS_I2C_ID);
+
     /*
      * off stream before init sensor
      */
@@ -439,7 +431,7 @@ int cisdp_sensor_init(bool sensor_init)
 
 	if ( sensor_init == true )
 	{
-		if(hx_drv_cis_setRegTable(HM0360_init_setting, HX_CIS_SIZE_N(HM0360_init_setting, HX_CIS_SensorSetting_t))!= HX_CIS_NO_ERROR)
+		if(hx_drv_cis_setRegTable(HM0360_md_init_setting, HX_CIS_SIZE_N(HM0360_md_init_setting, HX_CIS_SensorSetting_t))!= HX_CIS_NO_ERROR)
 		{
 			dbg_printf(DBG_LESS_INFO, "HM0360 Init by app fail \r\n");
 			return -1;
@@ -731,7 +723,7 @@ void cisdp_sensor_stop()
 
 #if (CIS_ENABLE_HX_AUTOI2C == 0x00)
     /*
-     * Default Stream On
+     * Stream Off
      */
     if(hx_drv_cis_setRegTable(HM0360_stream_off, HX_CIS_SIZE_N(HM0360_stream_off, HX_CIS_SensorSetting_t))!= HX_CIS_NO_ERROR)
     {
