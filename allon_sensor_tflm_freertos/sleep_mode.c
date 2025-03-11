@@ -397,7 +397,7 @@ void app_pmu_enter_dpd()
 RTC_ERROR_E RTC_GetTime(rtc_time *tm) {
 	RTC_ERROR_E ret;
 
-	ret = hx_drv_rtc_read_time(RTC_ID_0, tm, RTC_TIME_AFTER_DPD_1ST_READ_NO);
+	ret = hx_drv_rtc_read_time(RTC_ID_0, tm, RTC_TIME_AFTER_DPD_1ST_READ_YES);
 
 	return ret;
 }
