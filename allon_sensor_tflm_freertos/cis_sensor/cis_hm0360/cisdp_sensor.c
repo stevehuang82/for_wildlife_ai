@@ -61,17 +61,23 @@ static volatile uint32_t g_jpegautofill_addr = (uint32_t)jpegfilesizebuf;
 static APP_DP_INP_SUBSAMPLE_E g_subs=APP_DP_RES_YUV640x480_INP_SUBSAMPLE_1X;
 
 static HX_CIS_SensorSetting_t HM0360_md_init_setting[] = {
-#include "HM0360_OSC_Bayer_640x480_setA_VGA_md_4b_ParallelOutput_R2.i"
+#include "HM0360_OSC_Bayer_640x480_setA_VGA_setB_QVGA_md_8b_ParallelOutput_R2.i"
 };
 
 HX_CIS_SensorSetting_t  HM0360_md_stream_on[] = {
-		{HX_CIS_I2C_Action_W, 0x3510, 0x00},
+		{HX_CIS_I2C_Action_W, 0x3024, 0x01},	// select context B
+		{HX_CIS_I2C_Action_W, 0x3029, 0x40},	// 2fps sleep count H
+		{HX_CIS_I2C_Action_W, 0x302A, 0x20},	// 2fps sleep count L
+		{HX_CIS_I2C_Action_W, 0x3510, 0x00},	// disable parallel output
 		{HX_CIS_I2C_Action_W, 0x0100, 0x02},
 };
 
 static HX_CIS_SensorSetting_t HM0360_stream_on[] = {
-		{HX_CIS_I2C_Action_W, 0x3510, 0x01},
-		{HX_CIS_I2C_Action_W, 0x0100, 0x01},
+		{HX_CIS_I2C_Action_W, 0x3024, 0x00},	// select context A
+		{HX_CIS_I2C_Action_W, 0x3029, 0x07},	// 10fps sleep count H
+		{HX_CIS_I2C_Action_W, 0x302A, 0x80},	// 10fps sleep count L
+		{HX_CIS_I2C_Action_W, 0x3510, 0x01},	// enable parallel output
+		{HX_CIS_I2C_Action_W, 0x0100, 0x02},
 };
 
 static HX_CIS_SensorSetting_t HM0360_stream_off[] = {

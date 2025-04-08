@@ -17,4 +17,14 @@ Please make sure bootloader message as below.
    c. Create SD card image folder names by time
 2. add \doc\HM0360_Motion_Detection_Setting_20250306.pdf
 
-
+20250408
+1. Configure HM0360 to 640x480 10 fps(Context A) when WE2 is in all-on mode.
+2. Configure HM0360 to 320x240 2 fps (Context B) when WE2 is in DPD mode to save power.
+3. User can fine-tune the sleep time counter in the file ~\cis_hm0360\cisdp_sensor.c to control the frame rate of HM0360.
+	HX_CIS_SensorSetting_t  HM0360_md_stream_on[] = {
+			{HX_CIS_I2C_Action_W, 0x3024, 0x01},	// select context B
+			{HX_CIS_I2C_Action_W, 0x3029, 0x40},	// 2fps sleep count H
+			{HX_CIS_I2C_Action_W, 0x302A, 0x20},	// 2fps sleep count L
+			{HX_CIS_I2C_Action_W, 0x3510, 0x00},	// disable parallel output
+			{HX_CIS_I2C_Action_W, 0x0100, 0x02},
+	};

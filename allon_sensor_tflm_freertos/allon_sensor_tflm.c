@@ -253,7 +253,7 @@ void main_task(void *pvParameters)
 	{
 		/*Cold Boot*/
 		xprintf("### Cold Boot ###\n");
-		tm.tm_year = 2025; tm.tm_mon = 3; tm.tm_mday = 6; tm.tm_hour = 15; tm.tm_min = 30; tm.tm_sec = 0;
+		tm.tm_year = 2025; tm.tm_mon = 4; tm.tm_mday = 8; tm.tm_hour = 10; tm.tm_min = 50; tm.tm_sec = 0;
 		RTC_SetTime(&tm);
 		#if ( SUPPORT_FATFS == 1 )
 		fatfs_init();
