@@ -28,3 +28,10 @@ Please make sure bootloader message as below.
 			{HX_CIS_I2C_Action_W, 0x3510, 0x00},	// disable parallel output
 			{HX_CIS_I2C_Action_W, 0x0100, 0x02},
 	};
+
+20250423
+1. Change the motion detection interrupt to level mode and read HM0360_INT_INDC_REG bit3 to determine whether WE2 is awakened by HM0360 or BLE_WAKE.
+2. After HM0360 enters the motion detection I2C low-speed mode, WE2 needs to change the I2C master clock to 100K hz low-speed mode to avoid HM0360 register reading errors.
+   hx_drv_i2cm_init(USE_DW_IIC_1, HX_I2C_HOST_MST_1_BASE, DW_IIC_SPEED_STANDARD);
+3. Initialize all HM0360 registers during cold boot, and only set context A or B registers during warm boot.
+

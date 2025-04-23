@@ -60,6 +60,7 @@
 #include "cvapp.h"
 #include "sleep_mode.h"
 #include "pinmux_cfg.h"
+#include "cisdp_cfg.h"
 
 #define CIS_XSHUT_SGPIO0
 #ifdef CIS_XSHUT_SGPIO0
@@ -231,6 +232,7 @@ void main_task(void *pvParameters)
 	uint32_t wakeup_event;
 	uint32_t wakeup_event1;
 	rtc_time tm;
+	uint8_t hm0360_int_indic;
 
 	hx_drv_pmu_get_ctrl(PMU_pmu_wakeup_EVT, &wakeup_event);
 	hx_drv_pmu_get_ctrl(PMU_pmu_wakeup_EVT1, &wakeup_event1);
@@ -272,10 +274,25 @@ void main_task(void *pvParameters)
 		#if ( SUPPORT_FATFS == 1 )
 		fatfs_init();
 		#endif
+
+		// set I2C clock to 100K Hz
+		hx_drv_i2cm_init(USE_DW_IIC_1, HX_I2C_HOST_MST_1_BASE, DW_IIC_SPEED_STANDARD);
+		hx_drv_cis_get_reg(HM0360_INT_INDC_REG, &hm0360_int_indic);
+
+		if ( (hm0360_int_indic & HM0360_MD_INT_BIT) == HM0360_MD_INT_BIT )
+		{
+			dbg_printf(DBG_LESS_INFO, "\n### Wake up via INT_INDIC(0x2064) = 0x%x ###\n", hm0360_int_indic);
+		}
+		else
+		{
+			dbg_printf(DBG_LESS_INFO, "\n### Wake up via BLE_WAKE ###\n");
+		}
+		hx_drv_cis_set_reg(HM0360_INT_CLEAR_REG, 0xff, 0x01);
+
 		g_enter_pmu_frame_cnt = ENTER_PMU_MODE_FRAME_CNT;
 		drv_interface_set_mipi_ctrl(SCU_MIPI_CTRL_CPU);
         sensordplib_csirx_disable();
-		app_start_state(APP_STATE_ALLON);
+		app_start_state(APP_STATE_RESTART);
 	}
 
 #ifdef SUPPORT_DUAL_CORE
