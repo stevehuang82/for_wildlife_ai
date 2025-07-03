@@ -35,3 +35,7 @@ Please make sure bootloader message as below.
    hx_drv_i2cm_init(USE_DW_IIC_1, HX_I2C_HOST_MST_1_BASE, DW_IIC_SPEED_STANDARD);
 3. Initialize all HM0360 registers during cold boot, and only set context A or B registers during warm boot.
 
+20250703
+1. Supported the FatFs timestamp feature.
+2. Added EXIF information "Make, Camera Model Name, and Date/Time" to the JPEG file.
+

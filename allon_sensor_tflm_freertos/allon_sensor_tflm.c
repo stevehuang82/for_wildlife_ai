@@ -255,7 +255,7 @@ void main_task(void *pvParameters)
 	{
 		/*Cold Boot*/
 		xprintf("### Cold Boot ###\n");
-		tm.tm_year = 2025; tm.tm_mon = 4; tm.tm_mday = 8; tm.tm_hour = 10; tm.tm_min = 50; tm.tm_sec = 0;
+		tm.tm_year = 2025; tm.tm_mon = 7; tm.tm_mday = 2; tm.tm_hour = 10; tm.tm_min = 50; tm.tm_sec = 0;
 		RTC_SetTime(&tm);
 		#if ( SUPPORT_FATFS == 1 )
 		fatfs_init();
@@ -268,7 +268,7 @@ void main_task(void *pvParameters)
 		/*Warm Boot*/
 		xprintf("### Warm Boot ###\n");
 		app_clk_enable();
-		RTC_GetTime(&tm);
+		DPD_RTC_GetTime(&tm);
 		xprintf("RTC GetTime : %d/%02d/%02d %02d:%02d:%02d\r\n",
 			tm.tm_year, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 		#if ( SUPPORT_FATFS == 1 )
